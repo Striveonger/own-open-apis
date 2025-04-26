@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: own-open-apis
+
+server:
+  port: ${PORT:18081}
+  servlet:
+    context-path: /api/v1
+
+logging:
+  level:
+    root: info
+  file:
+    path: logs/
+
+own:
+  open-apis:
+    storage:
+      memory:
+        max-rows: ${MAX_ROWS:10}
