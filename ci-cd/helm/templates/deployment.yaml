@@ -1,68 +1,45 @@
-apiVersion: apps/v1
-kind: Deployment
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
 metadata:
-  name: {{ include "own-open-apis.fullname" . }}
+  namespace: "{{ .Release.Namespace }}"
+  name: "{{ include "own-open-apis.name" . }}-deployment"
   labels:
-    {{- include "own-open-apis.labels" . | nindent 4 }}
+{{ include "own-open-apis.labels" .  | indent 4 }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
+  replicas: {{ .Values.app.replicaCount }}
   selector:
     matchLabels:
-      {{- include "own-open-apis.selectorLabels" . | nindent 6 }}
+{{ include "own-open-apis.selectorLabels" .  | indent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+      namespace: "{{ .Release.Namespace }}"
+      name: "{{ include "own-open-apis.name" . }}"
       labels:
-        {{- include "own-open-apis.labels" . | nindent 8 }}
-        {{- with .Values.podLabels }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
+{{ include "own-open-apis.labels" .  | indent 8 }}
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      serviceAccountName: {{ include "own-open-apis.serviceAccountName" . }}
-      securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: {{ .Values.service.port }}
-              protocol: TCP
-          livenessProbe:
-            {{- toYaml .Values.livenessProbe | nindent 12 }}
-          readinessProbe:
-            {{- toYaml .Values.readinessProbe | nindent 12 }}
+        - name: "{{ include "own-open-apis.name" . }}"
+          image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}"
+          imagePullPolicy: "{{.Values.app.image.pullPolicy }}"
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-          {{- with .Values.volumeMounts }}
+            limits:
+              cpu: "{{ .Values.app.resources.cpu }}"
+              memory: "{{ .Values.app.resources.memory }}"
+            requests:
+              cpu: "{{ .Values.app.resources.cpu }}"
+              memory: "{{ .Values.app.resources.memory }}"
+          ports:
+            - containerPort: {{ .Values.app.port }}
+              protocol: "TCP"
           volumeMounts:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-      {{- with .Values.volumes }}
+          - name: node-logs
+            mountPath: /var/log/own-open-apis
+          env:
+{{- toYaml .Values.env | nindent 10 }}
+      restartPolicy: "Always"
       volumes:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+      - name: node-logs
+        hostPath:
+          path: /var/log/own-open-apis
+          type: "DirectoryOrCreate"

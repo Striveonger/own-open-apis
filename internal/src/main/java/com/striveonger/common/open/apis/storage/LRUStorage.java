@@ -1,6 +1,5 @@
 package com.striveonger.common.open.apis.storage;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,7 +76,11 @@ public class LRUStorage<T> {
             // P1 删除 tail
             if (node == tail) {
                 tail = tail.prev;
-                tail.next = null;
+                if (tail == null) {
+                    head = null;
+                } else {
+                    tail.next = null;
+                }
             } else if (node == head) {
                 head = head.next;
                 head.prev = null;
@@ -88,6 +91,7 @@ public class LRUStorage<T> {
                 next.prev = prev;
             }
             size--;
+            map.remove(key);
             return node.value;
         }
         return null;

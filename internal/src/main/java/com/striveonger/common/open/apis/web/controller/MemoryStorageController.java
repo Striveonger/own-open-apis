@@ -3,7 +3,7 @@ package com.striveonger.common.open.apis.web.controller;
 import com.striveonger.common.core.constant.ResultStatus;
 import com.striveonger.common.core.result.Result;
 import com.striveonger.common.open.apis.storage.LRUStorage;
-import com.striveonger.common.open.apis.web.dto.StorageItem;
+import com.striveonger.common.open.apis.web.dto.StorageDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,7 +23,7 @@ import java.util.Objects;
 public class MemoryStorageController {
     private final Logger log = LoggerFactory.getLogger(MemoryStorageController.class);
 
-    private final LRUStorage<StorageItem> storage;
+    private final LRUStorage<StorageDTO> storage;
 
     public MemoryStorageController(@Value("${own.open-apis.storage.memory.max-rows:1000}") Integer maxRows) {
         this.storage = new LRUStorage<>(maxRows);
@@ -37,7 +37,7 @@ public class MemoryStorageController {
         if (storage.containsKey(key)) {
             return Result.fail().message("key already exists");
         }
-        StorageItem item = new StorageItem();
+        StorageDTO item = new StorageDTO();
         item.setKey(key);
         item.setValue(value);
         item.setDescription(description);
@@ -51,7 +51,7 @@ public class MemoryStorageController {
     public Result delete(@PathVariable String key) {
         log.info("delete key={}", key);
 
-        StorageItem item = storage.remove(key);
+        StorageDTO item = storage.remove(key);
         if (Objects.nonNull(item)) {
             return Result.success();
         } else {
@@ -65,7 +65,7 @@ public class MemoryStorageController {
         String value = data.get("value");
         String description = data.get("description");
         if (storage.containsKey(key)) {
-            StorageItem item = storage.get(key);
+            StorageDTO item = storage.get(key);
             item.setValue(value);
             item.setDescription(description);
             item.setUpdateTime(LocalDateTime.now());
@@ -78,7 +78,7 @@ public class MemoryStorageController {
     @GetMapping("/storage/all")
     public Result list() {
         log.info("list");
-        List<StorageItem> list = storage.values().stream().sorted(Comparator.comparing(StorageItem::getUpdateTime)).toList();
+        List<StorageDTO> list = storage.values().stream().sorted(Comparator.comparing(StorageDTO::getUpdateTime)).toList();
         return Result.success().data(list);
     }
 
@@ -88,7 +88,7 @@ public class MemoryStorageController {
         if (Objects.isNull(key)) {
             return Result.fail().message("key is null");
         }
-        StorageItem item = storage.get(key);
+        StorageDTO item = storage.get(key);
         if (Objects.nonNull(item)) {
             return Result.success().data(item);
         } else {

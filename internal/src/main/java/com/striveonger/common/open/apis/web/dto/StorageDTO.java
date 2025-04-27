@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
  * @author Mr.Lee
  * @since 2025-04-26 10:39
  */
-public class StorageItem {
+public class StorageDTO {
 
     private String key;
 

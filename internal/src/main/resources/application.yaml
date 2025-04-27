@@ -5,7 +5,7 @@ spring:
 server:
   port: ${PORT:18081}
   servlet:
-    context-path: /api/v1
+    context-path: /own/open/api/v1
 
 logging:
   level:
