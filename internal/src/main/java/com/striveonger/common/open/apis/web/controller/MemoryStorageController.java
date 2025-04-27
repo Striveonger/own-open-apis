@@ -32,6 +32,9 @@ public class MemoryStorageController {
     @PostMapping("/storage/{key}")
     public Result save(@PathVariable String key, @RequestBody Map<String, String> data) {
         log.info("save key={}, data={}", key, data);
+        if ("all".equals(key)) {
+            return Result.fail().message("key cannot be 'all'").show();
+        }
         String value = data.get("value");
         String description = data.get("description");
         if (storage.containsKey(key)) {
