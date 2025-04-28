@@ -22,6 +22,19 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <!--<config.file.path>./ci-cd/configs</config.file.path>-->
+                <config.file.path>/Users/striveonger/development/workspace/favor/own-open-apis/ci-cd/configs</config.file.path>
+            </properties>
+        </profile>
+    </profiles>
+
     <dependencies>
         <dependency>
             <groupId>com.striveonger.common</groupId>
@@ -37,7 +50,15 @@
 
     <build>
         <finalName>${project.artifactId}</finalName>
+        <resources>
+            <!-- 配置文件中开启 @xxx.xxx@ -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
+            <!-- SpringBoot 打包工具 -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -49,6 +70,7 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- 编译工具 配置方法参数 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

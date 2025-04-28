@@ -1,20 +1,11 @@
-spring:
-  application:
-    name: own-open-apis
-
 server:
-  port: ${PORT:18081}
+  port: 18081
   servlet:
     context-path: /own/open/api/v1
 
-logging:
-  level:
-    root: info
-  file:
-    path: logs/
-
-own:
-  open-apis:
-    storage:
-      memory:
-        max-rows: ${MAX_ROWS:10}
+spring:
+  application:
+    name: own-open-apis
+  config:
+    import:
+      - file:@config.file.path@/external-config.yaml
