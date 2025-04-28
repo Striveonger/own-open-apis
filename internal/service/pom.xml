@@ -29,8 +29,16 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <!--<config.file.path>./ci-cd/configs</config.file.path>-->
-                <config.file.path>/Users/striveonger/development/workspace/favor/own-open-apis/ci-cd/configs</config.file.path>
+                <config.file.path>./internal/configs</config.file.path>
+            </properties>
+        </profile>
+        <profile>
+            <id>k8s</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <config.file.path>/opt/app/configs</config.file.path>
             </properties>
         </profile>
     </profiles>

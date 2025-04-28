@@ -1,0 +1,11 @@
+logging:
+  level:
+    root: info
+  file:
+    path: logs
+
+own:
+  open-apis:
+    storage:
+      memory:
+        max-rows: 10

@@ -13,7 +13,7 @@ APP_WORKSHOP=$(realpath "$(dirname "$0")/..")
 pushd "${APP_WORKSHOP}" || exit
 
 # build service
-mvn -f internal/pom.xml clean package -DskipTests
+mvn -f internal/service/pom.xml clean package -DskipTests -P k8s
 
 # --------------------------------------------------------------------------------------------
 # uninstall helm
