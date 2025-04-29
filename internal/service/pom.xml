@@ -29,7 +29,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <config.file.path>./internal/configs</config.file.path>
+                <config.folder.path>./internal/configs</config.folder.path>
             </properties>
         </profile>
         <profile>
@@ -38,7 +38,7 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <properties>
-                <config.file.path>/opt/app/configs</config.file.path>
+                <config.folder.path>/opt/app/configs</config.folder.path>
             </properties>
         </profile>
     </profiles>

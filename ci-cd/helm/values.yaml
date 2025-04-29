@@ -11,6 +11,18 @@ app:
   ingress:
     enabled: true
     path: "/own/open/api"
+  config:
+    applicationYaml:
+      logging:
+        level:
+          root: info
+        file:
+          path: /var/log/own-open-apis
+      own:
+        open-apis:
+          storage:
+            memory:
+              max-rows: 10
 
 env:
   - name: SPRING_PROFILES_ACTIVE

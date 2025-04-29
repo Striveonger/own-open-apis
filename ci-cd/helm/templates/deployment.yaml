@@ -18,6 +18,7 @@ spec:
       labels:
 {{ include "own-open-apis.labels" .  | indent 8 }}
     spec:
+      restartPolicy: "Always"
       containers:
         - name: "{{ include "own-open-apis.name" . }}"
           image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}"
@@ -32,14 +33,9 @@ spec:
           ports:
             - containerPort: {{ .Values.app.port }}
               protocol: "TCP"
-          volumeMounts:
-          - name: node-logs
-            mountPath: /var/log/own-open-apis
           env:
-{{- toYaml .Values.env | nindent 10 }}
-      restartPolicy: "Always"
+{{- toYaml .Values.env | nindent 12 }}
+          volumeMounts:
+{{ include "common.volumeMounts" . | indent 12}}
       volumes:
-      - name: node-logs
-        hostPath:
-          path: /var/log/own-open-apis
-          type: "DirectoryOrCreate"
+{{ include "common.volumes" . | indent 8}}

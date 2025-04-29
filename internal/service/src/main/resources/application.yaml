@@ -8,4 +8,4 @@ spring:
     name: own-open-apis
   config:
     import:
-      - file:@config.file.path@/external-config.yaml
+      - file:@config.folder.path@/app-config.yaml

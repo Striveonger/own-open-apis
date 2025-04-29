@@ -35,6 +35,9 @@ helm show values ci-cd/helm > ci-cd/package/values.yaml
 
 # deploy
 # helm uninstall own-open-apis -n own
-helm upgrade --install own-open-apis ci-cd/package/own-open-apis-$(cat ./ci-cd/VERSION).tgz --values ci-cd/package/values.yaml -n own --create-namespace
+helm upgrade --install own-open-apis ci-cd/package/own-open-apis-$(cat ./ci-cd/VERSION).tgz \
+      --values ci-cd/package/values.yaml \
+      --create-namespace --namespace own \
+      --set app.config.applicationYaml.own.open-apis.storage.memory.max-rows=3
 
 popd || exit

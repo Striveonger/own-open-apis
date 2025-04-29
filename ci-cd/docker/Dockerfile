@@ -4,7 +4,6 @@ LABEL version="1.0.0"
 
 COPY --from=ubuntu/jre:17_edge /opt/java /opt/java
 
-
 RUN apt-get update && \
     apt-get install -y curl && \
     apt-get install -y wget && \
@@ -15,7 +14,6 @@ RUN apt-get update && \
 # 设置时区变量及符号链接
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
 
 WORKDIR /opt/app
 
