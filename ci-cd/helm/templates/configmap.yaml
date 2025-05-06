@@ -2,9 +2,12 @@
 {{ $chartValues := dict "app-config" ( kebabcase  $app ) }}
 {{ $_ := set . "chartValues" $chartValues }}
 
-{{- $appConfigYaml := .Files.Get "../configs/app-config.yaml" | fromYaml }}
+{{- $appConfigYaml := .Files.Get "configs/app-config.yaml" | fromYaml }}
+{{- if not $appConfigYaml }}
+  {{ fail "Failed to load app-config.yaml" }}
+{{- end }}
 
-{{- $mergeAppConfigYaml := mergeOverwrite $appConfigYaml .Values.app.config.applicationYaml    }}
+{{- $mergeAppConfigYaml := mergeOverwrite $appConfigYaml .Values.app.config.applicationYaml }}
 
 apiVersion: v1
 kind: ConfigMap

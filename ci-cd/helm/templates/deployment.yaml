@@ -33,6 +33,10 @@ spec:
           ports:
             - containerPort: {{ .Values.app.port }}
               protocol: "TCP"
+          livenessProbe:
+{{ include "common.probe.liveness" . | indent 12 }}
+          readinessProbe:
+{{ include "common.probe.readiness" . | indent 12}}
           env:
 {{- toYaml .Values.env | nindent 12 }}
           volumeMounts:

@@ -10,7 +10,7 @@
 
 {{- define "common.volumeMounts" -}}
 - name: app-logs
-  mountPath: {{.Values.app.config.applicationYaml.logging.file.path | default "/var/log/"}}
+  mountPath: {{.Values.app.log.path | default "/var/log/"}}
   readOnly: false
 - name: app-config
   mountPath: /opt/app/configs

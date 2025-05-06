@@ -1,7 +1,7 @@
 server:
   port: 18081
   servlet:
-    context-path: /own/open/api/v1
+    context-path: /
 
 spring:
   application:

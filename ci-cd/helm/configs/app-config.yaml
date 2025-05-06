@@ -2,7 +2,7 @@ logging:
   level:
     root: info
   file:
-    path: logs
+    path: /var/log/own-open-apis
 
 management:
   endpoints:
